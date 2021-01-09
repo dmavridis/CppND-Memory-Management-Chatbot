@@ -21,7 +21,7 @@ ChatBot::ChatBot()
 ChatBot::ChatBot(std::string filename)
 {
     std::cout << "ChatBot Constructor" << std::endl;
-    
+
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
@@ -46,49 +46,48 @@ ChatBot::~ChatBot()
 // Copy constructor
 ChatBot::ChatBot (const ChatBot &source)
 {
-    *_image = *source._image;
-    *_currentNode = *source._currentNode;
-    *_rootNode = *source._rootNode;
-    *_chatLogic = *source._chatLogic;
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = new wxBitmap(*source._image);
 }
 
 // Copy Assignment operator
 ChatBot &ChatBot::operator=(const ChatBot &source)
 {
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
     if (this == &source)
         return *this;
-    *_image = *source._image;
-    *_currentNode = *source._currentNode;
-    *_rootNode = *source._rootNode;
-    *_chatLogic = *source._chatLogic; 
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = new wxBitmap(*source._image);
     return *this;
 };
 
 // Move constructor
 ChatBot::ChatBot (ChatBot &&source)
 {
-    _image = source._image;
-    _currentNode = source._currentNode;
-    _rootNode = source._rootNode;
+    std::cout << "ChatBot Move Constructor" << std::endl;
     _chatLogic = source._chatLogic;
-    source._image = NULL;
-    source._currentNode = nullptr;
-    source._rootNode = nullptr;
+    _rootNode = source._rootNode;
+    _image = source.GetImageHandle();
     source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = NULL;
 }
 
 ChatBot &ChatBot::operator=(ChatBot &&source)
 {
+    std::cout << "ChatBot Move Asignment Operator" << std::endl;
     if (this == &source)
         return *this;
-    _image = source._image;
-    _currentNode = source._currentNode;
-    _rootNode = source._rootNode;
+    delete _image;
     _chatLogic = source._chatLogic;
-    source._image = NULL;
-    source._currentNode = nullptr;
-    source._rootNode = nullptr;
+    _rootNode = source._rootNode;
+    _image = source._image;
     source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
     return *this;
 }
 
