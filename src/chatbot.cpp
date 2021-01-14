@@ -21,7 +21,6 @@ ChatBot::ChatBot()
 ChatBot::ChatBot(std::string filename)
 {
     std::cout << "ChatBot Constructor" << std::endl;
-
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
@@ -33,7 +32,6 @@ ChatBot::ChatBot(std::string filename)
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
-
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
@@ -42,7 +40,6 @@ ChatBot::~ChatBot()
     }
 }
 
-//// STUDENT CODE
 // Copy constructor
 ChatBot::ChatBot (const ChatBot &source)
 {
@@ -73,7 +70,7 @@ ChatBot::ChatBot (ChatBot &&source)
     _image = source.GetImageHandle();
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
-    source._image = NULL;
+    source._image = nullptr;
 }
 
 ChatBot &ChatBot::operator=(ChatBot &&source)
@@ -90,10 +87,6 @@ ChatBot &ChatBot::operator=(ChatBot &&source)
     source._image = nullptr;
     return *this;
 }
-
-
-////
-//// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
@@ -139,8 +132,8 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
-
     // send selected node answer to user
+    _chatLogic->SetChatbotHandle(this);
     _chatLogic->SendMessageToUser(answer);
 }
 
